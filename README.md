@@ -1,143 +1,157 @@
-# Validador de Dados Formal
+# 🎓 Validador de Dados Formal - UEPA
 
 ## Descrição
+Projeto acadêmico da disciplina **Linguagens Formais** da **Universidade do Estado do Pará (UEPA)**. Sistema completo de validação de dados usando expressões regulares, organizado em duas partes independentes: interface web e backend Python.
 
-Este projeto implementa um validador de dados formal usando expressões regulares para validar diferentes tipos de campos de formulário, conforme especificações acadêmicas da disciplina de Linguagens Formais.
+## 📁 Estrutura do Projeto
 
-## Campos Validados
-
-### 1. Nome
-- **Formato**: Nome Sobrenome
-- **Regras**: Primeiro símbolo maiúsculo, demais minúsculos, sem números ou caracteres especiais
-- **Exemplo**: "Alan Turing", "Noam Chomsky"
-
-### 2. E-mail
-- **Formato**: usuario@dominio.br
-- **Regras**: Exatamente um "@", terminar com ".br", apenas letras minúsculas
-- **Exemplo**: "a@a.br", "bes@uepa.br"
-
-### 3. Senha
-- **Formato**: 8 caracteres
-- **Regras**: Pelo menos 1 maiúscula, 1 número, sem caracteres especiais
-- **Exemplo**: "518R2r5e", "F1234567"
-
-### 4. CPF
-- **Formato**: 123.456.789-09
-- **Regras**: 11 dígitos com pontos e hífen nas posições corretas
-- **Exemplo**: "123.456.789-09"
-
-### 5. RG
-- **Formato**: 123456-7
-- **Regras**: 7 dígitos com hífen na 6ª posição
-- **Exemplo**: "875467-2"
-
-### 6. Telefone
-- **Formato**: (91) 99999-9999
-- **Regras**: DDD entre parênteses, espaço, 5 dígitos, hífen, 4 dígitos
-- **Exemplo**: "(91) 99999-9999"
-
-### 7. CEP
-- **Formato**: 66.645-225
-- **Regras**: 2 dígitos, ponto, 3 dígitos, hífen, 3 dígitos
-- **Exemplo**: "66.645-225"
-
-### 8. Data e Horário
-- **Formato**: dd/mm/aaaa hh:mm:ss
-- **Regras**: Data no formato brasileiro com horário 24h
-- **Exemplo**: "02/09/2025 23:59:59"
-
-### 9. Número de Ponto Flutuante
-- **Formato**: +/-123.45 ou 123,45
-- **Regras**: Sinal opcional, separador decimal (. ou ,), números inteiros aceitos
-- **Exemplo**: "-25.467", "1", "+64,2"
-
-## Arquivos do Projeto
-
-- `validador_dados.py`: Classe principal com os validadores e expressões regulares
-- `interface_visual.py`: **Interface gráfica moderna com tkinter** ⭐
-- `interface_validador.py`: Interface interativa de linha de comando
-- `teste_validadores.py`: Suite de testes completa
-- `executar.py`: Arquivo principal de execução
-- `README.md`: Este arquivo de documentação
+```
+📦 Trabalho faculdade/
+├── 📁 html-validadores/     # Interface Web Completa
+│   ├── index.html           # Validador completo integrado
+│   ├── navegacao.html       # Página principal de navegação
+│   ├── validador-*.html     # Validadores individuais
+│   ├── script.js           # Lógica JavaScript
+│   ├── styles.css          # Estilos CSS
+│   └── README.md           # Documentação HTML
+│
+├── 📁 python-validadores/   # Backend Python
+│   ├── validador_dados.py   # Classes principais
+│   ├── interface_*.py       # Interfaces Tkinter
+│   ├── executar.py         # Script principal
+│   ├── teste_*.py          # Testes unitários
+│   └── README.md           # Documentação Python
+│
+└── README.md               # Este arquivo (visão geral)
+```
 
 ## 🚀 Como Usar
 
-### 1. Interface Visual (Recomendada) ⭐
+### 🌐 Interface Web (Recomendado)
 ```bash
+cd html-validadores/
+# Abrir navegacao.html no navegador
+# Ou usar servidor local:
+python -m http.server 8000
+```
+
+### 🐍 Backend Python
+```bash
+cd python-validadores/
 python executar.py
-```
-ou
-```bash
-python interface_visual.py
+# ou
+./executar.bat
 ```
 
-**Funcionalidades da Interface Visual:**
-- 🎨 Design moderno e responsivo
-- ⚡ Validação em tempo real enquanto digita
-- 📋 Placeholders com exemplos
-- 🎯 Feedback visual instantâneo com ✅/❌
-- 📊 Relatórios detalhados
-- 📋 Janela de exemplos válidos
-- 🔍 Área de resultados com syntax highlighting
-- ⌨️ Atalhos: Ctrl+Enter (validar), Ctrl+L (limpar), F1 (exemplos)
+## 🧮 Validadores Implementados
 
-### 2. Interface de Linha de Comando
-```bash
-python interface_validador.py
-```
+### 9 Tipos de Validação
+1. **Nome Completo** - Formato "Nome Sobrenome" com maiúscula inicial
+2. **E-mail** - Formato brasileiro (obrigatório .br)
+3. **Senha Segura** - 8 caracteres, 1 maiúscula, 1 número
+4. **CPF** - Formato brasileiro 123.456.789-09
+5. **RG** - Formato 1234567-8
+6. **Telefone** - Celular brasileiro (91) 99999-9999
+7. **CEP** - Formato 66.645-225
+8. **Data/Horário** - dd/mm/aaaa hh:mm:ss
+9. **Número Decimal** - ±123.45 ou ±123,45
 
-### 3. Executar Testes Automáticos
-```bash
-python teste_validadores.py
-```
+## 🔍 Expressões Regulares
 
-### 4. Usar como Módulo Python
-```python
-from validador_dados import ValidadorDados
+| Campo | Regex | Exemplo |
+|-------|-------|---------|
+| Nome | `^[A-Z][a-z]+ [A-Z][a-z]+$` | Alan Turing |
+| E-mail | `^[a-z]+@[a-z]+\.br$` | user@uepa.br |
+| Senha | `^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8}$` | F1234567 |
+| CPF | `^\d{3}\.\d{3}\.\d{3}-\d{2}$` | 123.456.789-09 |
+| Telefone | `^\(\d{2}\) \d{5}-\d{4}$` | (91) 99999-9999 |
+| Número | `^[+-]?(\d+([.,]\d+)?|\d*[.,]\d+)$` | -25.467 |
 
-validador = ValidadorDados()
-valido, mensagem = validador.validar_email("teste@uepa.br")
-print(f"Resultado: {valido} - {mensagem}")
-```
+## 🎨 Recursos Principais
 
-## Funcionalidades da Interface
+### Interface Web (HTML)
+- ✅ **Navegação intuitiva** entre validadores
+- ✅ **Páginas individuais** com explicações detalhadas
+- ✅ **Espaços para autômatos finitos** (imagens)
+- ✅ **Comentários técnicos do Pedro**
+- ✅ **Exemplos funcionais e não funcionais**
+- ✅ **Design responsivo** (mobile + desktop)
+- ✅ **Validação em tempo real**
 
-1. **Validação Individual**: Teste cada tipo de campo separadamente
-2. **Validação Completa**: Valide todos os campos de uma vez
-3. **Exemplos**: Visualize exemplos de entradas válidas
-4. **Feedback Visual**: Resultados coloridos com símbolos ✓/✗
+### Backend Python
+- ✅ **Classes orientadas a objeto**
+- ✅ **Interfaces gráficas Tkinter**
+- ✅ **Testes unitários completos**
+- ✅ **Múltiplas interfaces disponíveis**
+- ✅ **Relatórios detalhados**
 
-## Regras Gerais
+## 🧪 Testes e Exemplos
 
-- Campos não podem estar vazios
-- Campos não podem começar ou terminar com espaços
-- Todas as especificações devem ser satisfeitas simultaneamente
-- Validação baseada em expressões regulares otimizadas
+### Funcionais (Válidos) ✅
+- Nome: "Alan Turing", "Marie Curie"
+- E-mail: "test@uepa.br", "user@domain.br"
+- Senha: "F1234567", "518R2r5e"
+- CPF: "123.456.789-09"
 
-## Estrutura do Código
+### Não Funcionais (Inválidos) ❌
+- Nome: "alan turing", "Alan123"
+- E-mail: "user@gmail.com", "USER@UEPA.BR"
+- Senha: "f1234567", "FABCDEFG"
+- CPF: "12345678909", "123.456.789"
 
-```
-ValidadorDados/
-├── validador_dados.py      # Classe principal
-├── interface_validador.py  # Interface CLI
-├── teste_validadores.py    # Suite de testes
-└── README.md              # Documentação
-```
+## 🛠️ Tecnologias
 
-## Tecnologias Utilizadas
+### Frontend
+- **HTML5** - Estrutura semântica
+- **CSS3** - Estilização moderna
+- **JavaScript ES6+** - Interatividade
+- **Font Awesome** - Ícones
+- **Google Fonts** - Tipografia
 
-- **Python 3**: Linguagem principal
-- **Módulo `re`**: Expressões regulares
-- **Typing**: Type hints para melhor legibilidade
-- **OS**: Manipulação de terminal multiplataforma
+### Backend
+- **Python 3.x** - Lógica principal
+- **Tkinter** - Interface gráfica
+- **RegEx** - Validação de padrões
+- **Unittest** - Testes automatizados
 
-## Testes Incluídos
+## 👥 Equipe de Desenvolvimento
 
-- ✅ Casos válidos para todos os campos
-- ✅ Casos inválidos para validação negativa  
-- ✅ Casos especiais (vazio, espaços)
-- ✅ Cobertura de 100% das regras especificadas
+- **Pedro** - Comentários técnicos, observações e melhorias
+- **Vitor** - Desenvolvimento, implementação e documentação
+- **Equipe UEPA** - Requisitos acadêmicos e revisão
 
-## Autor
+## 📚 Contexto Acadêmico
 
-Projeto desenvolvido para a disciplina de Linguagens Formais - Engenharia de Software, Universidade do Estado do Pará (UEPA).
+**Disciplina:** Linguagens Formais  
+**Curso:** Engenharia de Software  
+**Instituição:** Universidade do Estado do Pará - UEPA  
+**Ano:** 2025
+
+**Objetivos:**
+- Aplicação prática de expressões regulares
+- Desenvolvimento de interfaces de usuário
+- Validação formal de dados estruturados
+- Implementação de autômatos finitos
+
+## 📖 Documentação Detalhada
+
+- [`html-validadores/README.md`](html-validadores/README.md) - Interface Web
+- [`python-validadores/README.md`](python-validadores/README.md) - Backend Python
+
+## 🚀 Início Rápido
+
+1. **Para usar a interface web:**
+   ```bash
+   cd html-validadores/
+   # Abrir navegacao.html no navegador
+   ```
+
+2. **Para usar o backend Python:**
+   ```bash
+   cd python-validadores/
+   python executar.py
+   ```
+
+---
+
+*Projeto educacional desenvolvido para demonstrar conceitos de Linguagens Formais através de validação de dados - UEPA 2025*

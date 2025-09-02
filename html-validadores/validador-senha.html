@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Validador de Senha - UEPA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            padding: 1rem;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .automato-section {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .automato-placeholder {
+            color: #64748b;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .automato-info {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .validator-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-input input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .password-input input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .password-input input.valid {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .password-input input.invalid {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: #dc2626;
+        }
+
+        .result {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result.valid {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .result.invalid {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .result.neutral {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .password-strength {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .strength-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+
+        .strength-item.met {
+            color: #065f46;
+        }
+
+        .strength-item.unmet {
+            color: #991b1b;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .example-box {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .example-box h4 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .example-box ul {
+            list-style: none;
+        }
+
+        .example-box li {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .valid-example {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .invalid-example {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .regex-info {
+            background: #1f2937;
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .regex-info h3 {
+            margin-bottom: 1rem;
+            color: #f9fafb;
+        }
+
+        .regex-code {
+            background: #374151;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: #fbbf24;
+            text-align: center;
+            margin: 1rem 0;
+            word-break: break-all;
+        }
+
+        .regex-explanation {
+            margin-top: 1rem;
+        }
+
+        .regex-explanation ul {
+            margin-left: 1rem;
+        }
+
+        .regex-explanation li {
+            margin: 0.5rem 0;
+            color: #d1d5db;
+        }
+
+        .function-summary {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .function-summary h3 {
+            color: #7f1d1d;
+            margin-bottom: 1rem;
+        }
+
+        .function-summary p {
+            color: #991b1b;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .comment-space {
+            background: #fffbeb;
+            border: 2px dashed #f59e0b;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+            color: #92400e;
+        }
+
+        @media (max-width: 768px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-lock"></i> Validador de Senha Segura</h1>
+            <p>Validação de senhas com critérios de segurança</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="navegacao.html" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar à Navegação
+            </a>
+            <a href="index.html" class="btn btn-primary">
+                <i class="fas fa-shield-alt"></i> Validador Completo
+            </a>
+        </div>
+
+        <div class="content">
+            <!-- Seção do Autômato Finito -->
+            <div class="section">
+                <h2><i class="fas fa-project-diagram"></i> Autômato Finito</h2>
+                <div class="automato-section">
+                    <div class="automato-placeholder">
+                        <i class="fas fa-image" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 1rem; display: block;"></i>
+                        Espaço reservado para imagem do Autômato Finito
+                    </div>
+                    <div class="automato-info">
+                        <h4><i class="fas fa-info-circle"></i> Sobre o Autômato</h4>
+                        <p><strong>Estados:</strong> q0 (inicial), q1 (tem maiúscula), q2 (tem número), q3 (8 chars), q4 (aceito)</p>
+                        <p><strong>Alfabeto:</strong> {A-Z, a-z, 0-9}</p>
+                        <p><strong>Condições:</strong> Exatamente 8 caracteres, pelo menos 1 maiúscula, pelo menos 1 número</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informações sobre o Validador -->
+            <div class="section">
+                <h2><i class="fas fa-cog"></i> Informações do Validador</h2>
+                <div class="function-summary">
+                    <h3>Função: Validação de Senha Segura</h3>
+                    <p><strong>Desenvolvido por:</strong> Pedro (comentários adicionais)</p>
+                    <p>Este validador verifica se a senha atende aos critérios mínimos de segurança: exatamente 8 caracteres, pelo menos uma letra maiúscula e pelo menos um número. Não permite símbolos especiais para manter simplicidade.</p>
+                    <p><strong>Aplicação:</strong> Sistemas de autenticação básicos, aplicações educacionais, portais com nível de segurança intermediário.</p>
+                </div>
+
+                <div class="comment-space">
+                    <i class="fas fa-comment-dots" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <strong>Espaço para comentários do Pedro:</strong><br>
+                    Validador focado em simplicidade e facilidade de memorização, adequado para ambientes onde usabilidade é prioridade sobre máxima segurança.
+                </div>
+            </div>
+
+            <!-- Validador Interativo -->
+            <div class="section">
+                <h2><i class="fas fa-play"></i> Teste o Validador</h2>
+                <div class="validator-section">
+                    <div class="input-group">
+                        <label for="senhaInput">Digite uma senha:</label>
+                        <div class="password-input">
+                            <input type="password" id="senhaInput" placeholder="Ex: F1234567">
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div id="senhaResult" class="result neutral">
+                            <i class="fas fa-keyboard"></i> Digite para validar...
+                        </div>
+                        <div class="password-strength" id="passwordStrength" style="display: none;">
+                            <h4>Critérios de Validação:</h4>
+                            <div class="strength-item unmet" id="lengthCriteria">
+                                <i class="fas fa-times-circle"></i> Exatamente 8 caracteres
+                            </div>
+                            <div class="strength-item unmet" id="uppercaseCriteria">
+                                <i class="fas fa-times-circle"></i> Pelo menos 1 letra maiúscula
+                            </div>
+                            <div class="strength-item unmet" id="numberCriteria">
+                                <i class="fas fa-times-circle"></i> Pelo menos 1 número
+                            </div>
+                            <div class="strength-item unmet" id="charactersCriteria">
+                                <i class="fas fa-times-circle"></i> Apenas letras e números
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expressão Regular -->
+            <div class="section">
+                <div class="regex-info">
+                    <h3><i class="fas fa-code"></i> Expressão Regular Utilizada</h3>
+                    <div class="regex-code">
+                        /^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8}$/
+                    </div>
+                    <div class="regex-explanation">
+                        <strong>Explicação da Regex:</strong>
+                        <ul>
+                            <li><code>^</code> - Início da string</li>
+                            <li><code>(?=.*[A-Z])</code> - Lookahead positivo: deve conter pelo menos uma maiúscula</li>
+                            <li><code>(?=.*[0-9])</code> - Lookahead positivo: deve conter pelo menos um número</li>
+                            <li><code>[A-Za-z0-9]{8}</code> - Exatamente 8 caracteres alfanuméricos</li>
+                            <li><code>$</code> - Fim da string</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplos -->
+            <div class="section">
+                <h2><i class="fas fa-lightbulb"></i> Exemplos de Teste</h2>
+                <div class="examples-grid">
+                    <div class="example-box">
+                        <h4><i class="fas fa-check-circle" style="color: #10b981;"></i> Funcionais (Válidos)</h4>
+                        <ul>
+                            <li class="valid-example">F1234567</li>
+                            <li class="valid-example">518R2r5e</li>
+                            <li class="valid-example">A1bcdefg</li>
+                            <li class="valid-example">Test1234</li>
+                        </ul>
+                    </div>
+                    <div class="example-box">
+                        <h4><i class="fas fa-times-circle" style="color: #ef4444;"></i> Não Funcionais (Inválidos)</h4>
+                        <ul>
+                            <li class="invalid-example">f1234567 (sem maiúscula)</li>
+                            <li class="invalid-example">FABCDEFG (sem número)</li>
+                            <li class="invalid-example">F123456 (7 caracteres)</li>
+                            <li class="invalid-example">F12345678 (9 caracteres)</li>
+                            <li class="invalid-example">F123456@ (símbolo especial)</li>
+                            <li class="invalid-example">F 234567 (com espaço)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pedro: Validador de Senha Segura - Implementação JavaScript
+        // Regex para validar senha: 8 caracteres, 1 maiúscula, 1 número, sem símbolos
+        const senhaPattern = /^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8}$/;
+
+        const senhaInput = document.getElementById('senhaInput');
+        const senhaResult = document.getElementById('senhaResult');
+        const passwordStrength = document.getElementById('passwordStrength');
+
+        // Pedro: Event listener para validação em tempo real
+        senhaInput.addEventListener('input', function() {
+            const valor = this.value;
+            
+            // Pedro: Se campo vazio, resetar estado
+            if (!valor.trim()) {
+                resetValidation();
+                return;
+            }
+
+            // Pedro: Mostrar critérios de validação
+            passwordStrength.style.display = 'block';
+
+            // Pedro: Verificar cada critério individualmente
+            checkPasswordCriteria(valor);
+
+            // Pedro: Validar com a expressão regular
+            const isValid = senhaPattern.test(valor);
+            
+            if (isValid) {
+                // Pedro: Campo válido - aplicar estilos de sucesso
+                this.classList.remove('invalid');
+                this.classList.add('valid');
+                senhaResult.classList.remove('invalid', 'neutral');
+                senhaResult.classList.add('valid');
+                senhaResult.innerHTML = '<i class="fas fa-check-circle"></i> Senha válida! Atende todos os critérios de segurança.';
+            } else {
+                // Pedro: Campo inválido - aplicar estilos de erro
+                this.classList.remove('valid');
+                this.classList.add('invalid');
+                senhaResult.classList.remove('valid', 'neutral');
+                senhaResult.classList.add('invalid');
+                senhaResult.innerHTML = '<i class="fas fa-times-circle"></i> Senha inválida. Verifique os critérios abaixo.';
+            }
+        });
+
+        // Pedro: Função para verificar critérios individuais da senha
+        function checkPasswordCriteria(senha) {
+            // Pedro: Critério de comprimento (exatamente 8 caracteres)
+            const lengthCriteria = document.getElementById('lengthCriteria');
+            if (senha.length === 8) {
+                lengthCriteria.className = 'strength-item met';
+                lengthCriteria.innerHTML = '<i class="fas fa-check-circle"></i> Exatamente 8 caracteres';
+            } else {
+                lengthCriteria.className = 'strength-item unmet';
+                lengthCriteria.innerHTML = `<i class="fas fa-times-circle"></i> Exatamente 8 caracteres (atual: ${senha.length})`;
+            }
+
+            // Pedro: Critério de letra maiúscula
+            const uppercaseCriteria = document.getElementById('uppercaseCriteria');
+            if (/[A-Z]/.test(senha)) {
+                uppercaseCriteria.className = 'strength-item met';
+                uppercaseCriteria.innerHTML = '<i class="fas fa-check-circle"></i> Pelo menos 1 letra maiúscula';
+            } else {
+                uppercaseCriteria.className = 'strength-item unmet';
+                uppercaseCriteria.innerHTML = '<i class="fas fa-times-circle"></i> Pelo menos 1 letra maiúscula';
+            }
+
+            // Pedro: Critério de número
+            const numberCriteria = document.getElementById('numberCriteria');
+            if (/[0-9]/.test(senha)) {
+                numberCriteria.className = 'strength-item met';
+                numberCriteria.innerHTML = '<i class="fas fa-check-circle"></i> Pelo menos 1 número';
+            } else {
+                numberCriteria.className = 'strength-item unmet';
+                numberCriteria.innerHTML = '<i class="fas fa-times-circle"></i> Pelo menos 1 número';
+            }
+
+            // Pedro: Critério de caracteres permitidos
+            const charactersCriteria = document.getElementById('charactersCriteria');
+            if (/^[A-Za-z0-9]+$/.test(senha)) {
+                charactersCriteria.className = 'strength-item met';
+                charactersCriteria.innerHTML = '<i class="fas fa-check-circle"></i> Apenas letras e números';
+            } else {
+                charactersCriteria.className = 'strength-item unmet';
+                charactersCriteria.innerHTML = '<i class="fas fa-times-circle"></i> Apenas letras e números (sem símbolos ou espaços)';
+            }
+        }
+
+        // Pedro: Função para resetar o estado da validação
+        function resetValidation() {
+            senhaInput.classList.remove('valid', 'invalid');
+            senhaResult.classList.remove('valid', 'invalid');
+            senhaResult.classList.add('neutral');
+            senhaResult.innerHTML = '<i class="fas fa-keyboard"></i> Digite para validar...';
+            passwordStrength.style.display = 'none';
+        }
+
+        // Pedro: Função para alternar visibilidade da senha
+        function togglePassword() {
+            const input = senhaInput;
+            const icon = document.querySelector('.toggle-password i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Pedro: Event listener para limpar campo quando recebe foco
+        senhaInput.addEventListener('focus', function() {
+            if (this.value === this.placeholder) {
+                this.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

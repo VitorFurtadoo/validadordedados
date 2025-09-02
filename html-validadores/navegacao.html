@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Validador de Dados Formal - Navegação</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .validators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .validator-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .validator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .validator-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .validator-card h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .validator-card p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+        }
+
+        .main-validator {
+            margin-bottom: 3rem;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: 15px;
+        }
+
+        .main-validator h2 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .main-validator .btn {
+            font-size: 1.1rem;
+            padding: 15px 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <i class="fas fa-graduation-cap"></i>
+                Validador de Dados Formal
+            </h1>
+            <p>Universidade do Estado do Pará - UEPA | Projeto de Linguagens Formais</p>
+        </div>
+
+        <div class="main-validator">
+            <h2><i class="fas fa-shield-alt"></i> Validador Completo</h2>
+            <p>Teste todos os validadores em uma única página interativa</p>
+            <a href="index.html" class="btn">
+                <i class="fas fa-play"></i> Acessar Validador Completo
+            </a>
+        </div>
+
+        <h2 style="text-align: center; color: #1f2937; margin-bottom: 2rem; font-size: 2rem;">
+            <i class="fas fa-cogs"></i> Validadores Individuais
+        </h2>
+
+        <div class="validators-grid">
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3>Nome Completo</h3>
+                <p>Validação de nomes próprios com primeira letra maiúscula e sobrenome obrigatório</p>
+                <a href="validador-nome.html" class="btn">Testar Nome</a>
+            </div>
+
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>E-mail</h3>
+                <p>Validação de endereços de e-mail com domínio .br obrigatório</p>
+                <a href="validador-email.html" class="btn">Testar E-mail</a>
+            </div>
+
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Senha Segura</h3>
+                <p>Validação de senhas com 8 caracteres, uma maiúscula e um número</p>
+                <a href="validador-senha.html" class="btn">Testar Senha</a>
+            </div>
+
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <h3>CPF</h3>
+                <p>Validação de CPF brasileiro no formato 123.456.789-09</p>
+                <a href="validador-cpf.html" class="btn">Testar CPF</a>
+            </div>
+
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-address-card"></i>
+                </div>
+                <h3>RG</h3>
+                <p>Validação de RG no formato brasileiro 1234567-8</p>
+                <a href="validador-rg.html" class="btn">Testar RG</a>
+            </div>
+
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h3>Telefone</h3>
+                <p>Validação de telefones brasileiros no formato (DD) 99999-9999</p>
+                <a href="validador-telefone.html" class="btn">Testar Telefone</a>
+            </div>
+
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>CEP</h3>
+                <p>Validação de CEP brasileiro no formato 12.345-678</p>
+                <a href="validador-cep.html" class="btn">Testar CEP</a>
+            </div>
+
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Data e Horário</h3>
+                <p>Validação de data e horário no formato dd/mm/aaaa hh:mm:ss</p>
+                <a href="validador-data.html" class="btn">Testar Data/Hora</a>
+            </div>
+
+            <div class="validator-card">
+                <div class="validator-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3>Número Decimal</h3>
+                <p>Validação de números decimais positivos e negativos</p>
+                <a href="validador-numero.html" class="btn">Testar Número</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 UEPA - Projeto desenvolvido por Pedro, Vitor e equipe</p>
+            <p><strong>Disciplina:</strong> Linguagens Formais | <strong>Tecnologias:</strong> HTML5, CSS3, JavaScript</p>
+        </div>
+    </div>
+</body>
+</html>

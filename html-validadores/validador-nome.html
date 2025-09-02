@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Validador de Nome - UEPA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            padding: 1rem;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .automato-section {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .automato-placeholder {
+            color: #64748b;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .automato-info {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .validator-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-group input.valid {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .input-group input.invalid {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .result {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result.valid {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .result.invalid {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .result.neutral {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .example-box {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .example-box h4 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .example-box ul {
+            list-style: none;
+        }
+
+        .example-box li {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .valid-example {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .invalid-example {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .regex-info {
+            background: #1f2937;
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .regex-info h3 {
+            margin-bottom: 1rem;
+            color: #f9fafb;
+        }
+
+        .regex-code {
+            background: #374151;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #fbbf24;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .regex-explanation {
+            margin-top: 1rem;
+        }
+
+        .regex-explanation ul {
+            margin-left: 1rem;
+        }
+
+        .regex-explanation li {
+            margin: 0.5rem 0;
+            color: #d1d5db;
+        }
+
+        .function-summary {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .function-summary h3 {
+            color: #0c4a6e;
+            margin-bottom: 1rem;
+        }
+
+        .function-summary p {
+            color: #0369a1;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .comment-space {
+            background: #fffbeb;
+            border: 2px dashed #f59e0b;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+            color: #92400e;
+        }
+
+        @media (max-width: 768px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-user"></i> Validador de Nome Completo</h1>
+            <p>Validação de nomes próprios com expressões regulares</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="navegacao.html" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar à Navegação
+            </a>
+            <a href="index.html" class="btn btn-primary">
+                <i class="fas fa-shield-alt"></i> Validador Completo
+            </a>
+        </div>
+
+        <div class="content">
+            <!-- Seção do Autômato Finito -->
+            <div class="section">
+                <h2><i class="fas fa-project-diagram"></i> Autômato Finito</h2>
+                <div class="automato-section">
+                    <div class="automato-placeholder">
+                        <i class="fas fa-image" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 1rem; display: block;"></i>
+                        Espaço reservado para imagem do Autômato Finito
+                    </div>
+                    <div class="automato-info">
+                        <h4><i class="fas fa-info-circle"></i> Sobre o Autômato</h4>
+                        <p><strong>Estados:</strong> q0 (inicial), q1 (primeiro nome), q2 (espaço), q3 (segundo nome/aceito)</p>
+                        <p><strong>Alfabeto:</strong> {A-Z, a-z, espaço}</p>
+                        <p><strong>Transições:</strong> q0 → q1 (letra maiúscula), q1 → q1 (letra minúscula), q1 → q2 (espaço), q2 → q3 (letra maiúscula), q3 → q3 (letra minúscula)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informações sobre o Validador -->
+            <div class="section">
+                <h2><i class="fas fa-cog"></i> Informações do Validador</h2>
+                <div class="function-summary">
+                    <h3>Função: Validação de Nome Completo</h3>
+                    <p><strong>Desenvolvido por:</strong> Pedro (comentários adicionais)</p>
+                    <p>Este validador verifica se o nome inserido segue o padrão de nome completo brasileiro, exigindo pelo menos nome e sobrenome, ambos iniciados com letra maiúscula seguida de letras minúsculas.</p>
+                    <p><strong>Aplicação:</strong> Formulários de cadastro, sistemas acadêmicos, validação de identidade em documentos.</p>
+                </div>
+
+                <div class="comment-space">
+                    <i class="fas fa-comment-dots" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <strong>Espaço para comentários do Pedro:</strong><br>
+                    Adicione aqui observações técnicas, melhorias sugeridas ou explicações adicionais sobre o funcionamento do validador.
+                </div>
+            </div>
+
+            <!-- Validador Interativo -->
+            <div class="section">
+                <h2><i class="fas fa-play"></i> Teste o Validador</h2>
+                <div class="validator-section">
+                    <div class="input-group">
+                        <label for="nomeInput">Digite um nome completo:</label>
+                        <input type="text" id="nomeInput" placeholder="Ex: Alan Turing">
+                        <div id="nomeResult" class="result neutral">
+                            <i class="fas fa-keyboard"></i> Digite para validar...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expressão Regular -->
+            <div class="section">
+                <div class="regex-info">
+                    <h3><i class="fas fa-code"></i> Expressão Regular Utilizada</h3>
+                    <div class="regex-code">
+                        /^[A-Z][a-z]+ [A-Z][a-z]+$/
+                    </div>
+                    <div class="regex-explanation">
+                        <strong>Explicação da Regex:</strong>
+                        <ul>
+                            <li><code>^</code> - Início da string</li>
+                            <li><code>[A-Z]</code> - Uma letra maiúscula (primeiro nome)</li>
+                            <li><code>[a-z]+</code> - Uma ou mais letras minúsculas</li>
+                            <li><code> </code> - Exatamente um espaço</li>
+                            <li><code>[A-Z]</code> - Uma letra maiúscula (sobrenome)</li>
+                            <li><code>[a-z]+</code> - Uma ou mais letras minúsculas</li>
+                            <li><code>$</code> - Fim da string</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplos -->
+            <div class="section">
+                <h2><i class="fas fa-lightbulb"></i> Exemplos de Teste</h2>
+                <div class="examples-grid">
+                    <div class="example-box">
+                        <h4><i class="fas fa-check-circle" style="color: #10b981;"></i> Funcionais (Válidos)</h4>
+                        <ul>
+                            <li class="valid-example">Alan Turing</li>
+                            <li class="valid-example">Ada Lovelace</li>
+                            <li class="valid-example">Marie Curie</li>
+                            <li class="valid-example">Steve Jobs</li>
+                        </ul>
+                    </div>
+                    <div class="example-box">
+                        <h4><i class="fas fa-times-circle" style="color: #ef4444;"></i> Não Funcionais (Inválidos)</h4>
+                        <ul>
+                            <li class="invalid-example">alan turing (minúsculas)</li>
+                            <li class="invalid-example">ALAN TURING (maiúsculas)</li>
+                            <li class="invalid-example">Alan (só nome)</li>
+                            <li class="invalid-example">Alan  Turing (dois espaços)</li>
+                            <li class="invalid-example"> Alan Turing (espaço inicial)</li>
+                            <li class="invalid-example">Alan123 Turing (números)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pedro: Validador de Nome Completo - Implementação JavaScript
+        // Regex para validar nome completo: primeira letra maiúscula, resto minúscula, espaço, primeira letra maiúscula, resto minúscula
+        const nomePattern = /^[A-Z][a-z]+ [A-Z][a-z]+$/;
+
+        const nomeInput = document.getElementById('nomeInput');
+        const nomeResult = document.getElementById('nomeResult');
+
+        // Pedro: Event listener para validação em tempo real
+        nomeInput.addEventListener('input', function() {
+            const valor = this.value;
+            
+            // Pedro: Se campo vazio, resetar estado
+            if (!valor.trim()) {
+                resetValidation();
+                return;
+            }
+
+            // Pedro: Validar com a expressão regular
+            const isValid = nomePattern.test(valor);
+            
+            if (isValid) {
+                // Pedro: Campo válido - aplicar estilos de sucesso
+                this.classList.remove('invalid');
+                this.classList.add('valid');
+                nomeResult.classList.remove('invalid', 'neutral');
+                nomeResult.classList.add('valid');
+                nomeResult.innerHTML = '<i class="fas fa-check-circle"></i> Nome válido! Formato correto.';
+            } else {
+                // Pedro: Campo inválido - aplicar estilos de erro
+                this.classList.remove('valid');
+                this.classList.add('invalid');
+                nomeResult.classList.remove('valid', 'neutral');
+                nomeResult.classList.add('invalid');
+                
+                // Pedro: Mensagens de erro específicas baseadas no tipo de problema
+                let errorMessage = getErrorMessage(valor);
+                nomeResult.innerHTML = `<i class="fas fa-times-circle"></i> ${errorMessage}`;
+            }
+        });
+
+        // Pedro: Função para determinar o tipo específico de erro
+        function getErrorMessage(valor) {
+            if (!valor.includes(' ')) {
+                return 'Nome deve conter pelo menos nome e sobrenome separados por espaço.';
+            }
+            if (valor.startsWith(' ') || valor.endsWith(' ')) {
+                return 'Nome não pode começar ou terminar com espaço.';
+            }
+            if (valor.includes('  ')) {
+                return 'Nome não pode conter espaços duplos.';
+            }
+            if (!/^[A-Za-z ]+$/.test(valor)) {
+                return 'Nome deve conter apenas letras e espaços.';
+            }
+            if (!/^[A-Z]/.test(valor)) {
+                return 'Primeiro nome deve começar com letra maiúscula.';
+            }
+            
+            const partes = valor.split(' ');
+            if (partes.length < 2) {
+                return 'Nome deve conter pelo menos nome e sobrenome.';
+            }
+            
+            for (let i = 0; i < partes.length; i++) {
+                if (!/^[A-Z][a-z]+$/.test(partes[i])) {
+                    return `Palavra "${partes[i]}" deve começar com maiúscula e continuar com minúsculas.`;
+                }
+            }
+            
+            return 'Formato de nome inválido.';
+        }
+
+        // Pedro: Função para resetar o estado da validação
+        function resetValidation() {
+            nomeInput.classList.remove('valid', 'invalid');
+            nomeResult.classList.remove('valid', 'invalid');
+            nomeResult.classList.add('neutral');
+            nomeResult.innerHTML = '<i class="fas fa-keyboard"></i> Digite para validar...';
+        }
+
+        // Pedro: Event listener para limpar campo quando recebe foco
+        nomeInput.addEventListener('focus', function() {
+            if (this.value === this.placeholder) {
+                this.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
